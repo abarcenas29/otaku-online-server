@@ -1,0 +1,53 @@
+{
+  "data": [
+    {
+      "options": "categories",
+      "key": "merchandise",
+      "value": "merchandise"
+    }, { 
+      "options": "categories",
+      "key": "blu-ray / DVD",
+      "value": "blu-ray / DVD"
+    }, {
+      "options": "categories",
+      "key": "cosplay",
+      "value": "cosplay"
+    }, {
+      "options": "categories-cosplay",
+      "key": "wigs",
+      "value": "wigs"
+    }, {
+      "options": "categories-cosplay",
+      "key": "armor",
+      "value": "armor"
+    }, {
+      "options": "categories-cosplay",
+      "key": "upper-body",
+      "value": "upper-body"
+    }, {
+      "options": "categories-cosplay",
+      "key": "cloth",
+      "value": "cloth"
+    }, {
+      "options": "categories-cosplay",
+      "key": "accessory",
+      "value": "accesory"
+    }, {
+      "options": "categories-cosplay",
+      "key": "wigs",
+      "value": "wigs"
+    }, {
+      "options": "categories-cosplay",
+      "key": "lower-body",
+      "value": "lower-body"
+    }, {
+      "options": "categories-cosplay",
+      "key": "pants",
+      "value": "pants"
+    }, {
+      "options": "categories-cosplay",
+      "key": "skirt",
+      "value": "skirt"
+    }
+  ]
+}
