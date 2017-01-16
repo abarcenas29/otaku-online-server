@@ -48,6 +48,22 @@
       "options": "categories-cosplay",
       "key": "skirt",
       "value": "skirt"
+    }, {
+      "options": "roles",
+      "key": "user",
+      "value": 100
+    }, {
+      "options": "roles",
+      "key": "administrator",
+      "value": 0
+    }, {
+      "options": "roles",
+      "key": "moderator",
+      "value": 50
+    }, {
+      "options": "roles",
+      "key": "seller",
+      "value": 75
     }
   ]
 }
