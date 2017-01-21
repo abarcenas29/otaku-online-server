@@ -27,7 +27,6 @@ export function list (params) {
 export function create (params) {
   const { option, key, value } = params
   return new Promise((resolve, reject) => {
-    console.log('Counting options')
     db.oneOrNone(`
       SELECT
         COUNT(*)

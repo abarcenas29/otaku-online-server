@@ -28,3 +28,14 @@ export function formatUpdate (params) {
 
   return {set, where: WHERE, values: values}
 }
+
+export function inArrayFormat (params) {
+  let WHERE = ''
+  let num = 1
+  params.forEach((item) => {
+    WHERE = `${WHERE},$${num}`
+  })
+
+  WHERE = WHERE.substring(1)
+  return params
+}
