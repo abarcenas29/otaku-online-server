@@ -2,11 +2,10 @@ import os from 'os'
 import express from 'express'
 import cluster from 'cluster'
 import bodyParser from 'body-parser'
-import path from 'path'
-import fs from 'fs'
 
 // Routes
 import Users from './routes/users'
+import Options from './routes/options'
 
 if (cluster.isMaster) {
   const numWorkers = os.cpus().length
@@ -37,6 +36,7 @@ if (cluster.isMaster) {
 
   // Routes
   app.use('/users', Users)
+  app.use('/options', Options)
 
   app.listen(9000, () => {
     console.log(`Process ${process.pid} is listening to all incoming request.`)

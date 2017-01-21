@@ -1,5 +1,5 @@
 import express from 'express'
-import { create, update, list } from '~/app/services/users'
+import { create, update, list } from '~/app/services/options'
 
 const router = express.Router()
 
@@ -18,7 +18,7 @@ router.post('/', (req, res) => {
 })
 
 router.put('/:id', (req, res) => {
-  update({set: {...req.body}, where: {fbid: req.params.id}})
+  update({set: {...req.body}, where: {id: req.params.id}})
     .then(data => res.json(data))
     .catch(e => res.status(500).json(e))
 })
