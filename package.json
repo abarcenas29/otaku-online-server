@@ -9,7 +9,7 @@
     "migrate:reset": "db-migrate reset && yarn run migrate",
     "db:reset": "yarn run migrate:reset && yarn run seeders",
     "seeders": "babel-node seeders/run.js --presets,stage-2",
-    "start": "nodemon app/index.js --exec babel-node --presets,stage-2",
+    "start": "nodemon app/index.js --exec babel-node --presets,stage-2 --plugins babel-root-import",
     "build": "babel app -d build --presets es2015,stage-2",
     "start:prod": "node build/index.js"
   },
@@ -23,13 +23,14 @@
     "multer": "1.2.1",
     "pg": "6.1.2",
     "pg-promise": "5.5.1",
-    "dotenv":"4.0.0",
+    "dotenv": "4.0.0",
     "uuid": "3.0.1"
   },
   "devDependencies": {
     "babel-cli": "6.18.0",
     "babel-preset-es2015": "6.18.0",
-    "babel-preset-stage-2": "6.18.0"
+    "babel-preset-stage-2": "6.18.0",
+    "babel-root-import": "^4.1.5"
   },
   "author": "Aldrich Allen Barcenas",
   "license": "ISC"
