@@ -1,9 +1,9 @@
 import db from '~/utils/pg'
 import { formatUpdate } from '~/app/utils/dbformater'
-import ResponseForammter from '~/app/utils/responseFormatter'
+import ResponseFormatter from '~/app/utils/responseFormatter'
 import uuidV4 from 'uuid/v4'
 
-const responseFormat = ResponseForammter
+const responseFormat = ResponseFormatter
 
 export function list (params) {
   const { option } = params
