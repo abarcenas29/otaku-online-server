@@ -16,7 +16,7 @@ export function list (params) {
       FROM
         photos
       WHERE
-        ids IN (${params})
+        id IN (${params})
     `, ids)
     .then(data => resolve(responseFormat.response({rows: data}).success()))
     .catch(e => {
@@ -45,7 +45,27 @@ export function create (params) {
       )
       returning id;
     `, [uuid, date, filename, uuid, now])
-    .then(data => responseFormat.response({created: true, id: data.id}).success())
-    .catch(e => responseFormat.response({created: false, id: null}).error())
+    .then(data =>
+      resolve(responseFormat.response({created: true, id: data.id}).success()))
+    .catch(e => {
+      console.log(e)
+      reject(responseFormat.response({created: false, id: null, error: e}).error())
+    })
+  })
+}
+
+export function remove (params) {
+  const ids = params.ids
+  params = inArrayFormat(ids)
+  return new Promise((resolve, reject) => {
+    return db.oneOrNone(`
+      DELETE FROM photos
+      WHERE id IN (${params})
+    `, ids)
+    .then(data => resolve(responseFormat.response({data}).success()))
+    .catch(e => {
+      console.log(e)
+      reject(responseFormat.response({error: e}))
+    })
   })
 }

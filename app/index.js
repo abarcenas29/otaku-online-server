@@ -6,6 +6,7 @@ import bodyParser from 'body-parser'
 // Routes
 import Users from './routes/users'
 import Options from './routes/options'
+import Photos from './routes/photos'
 
 if (cluster.isMaster) {
   const numWorkers = os.cpus().length
@@ -37,6 +38,7 @@ if (cluster.isMaster) {
   // Routes
   app.use('/users', Users)
   app.use('/options', Options)
+  app.use('/photos', Photos)
 
   app.listen(9000, () => {
     console.log(`Process ${process.pid} is listening to all incoming request.`)

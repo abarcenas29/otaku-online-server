@@ -34,8 +34,9 @@ export function inArrayFormat (params) {
   let num = 1
   params.forEach((item) => {
     WHERE = `${WHERE},$${num}`
+    num++
   })
 
   WHERE = WHERE.substring(1)
-  return params
+  return WHERE
 }

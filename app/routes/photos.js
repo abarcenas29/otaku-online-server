@@ -1,5 +1,5 @@
 import express from 'express'
-import { create, update, list } from '~/app/services/photos'
+import { create, list, remove } from '~/app/services/photos'
 
 const router = express.Router()
 
@@ -22,8 +22,8 @@ router.post('/', (req, res) => {
     })
 })
 
-router.delete('/:id', (req, res) => {
-  update({set: {...req.body}, where: {id: req.params.id}})
+router.delete('/', (req, res) => {
+  remove(req.body)
     .then(data => res.json(data))
     .catch(e => res.status(500).json(e))
 })
