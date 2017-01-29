@@ -4,6 +4,8 @@ import cluster from 'cluster'
 import bodyParser from 'body-parser'
 import session from 'express-session'
 import pgSimple from 'connect-pg-simple'
+import cors from 'cors'
+import compression from 'compression'
 
 // Routes
 import Anilist from './routes/anilist'
@@ -36,9 +38,18 @@ if (cluster.isMaster) {
   /**
    * Middlewares
   **/
+  app.use(cors({
+    origin: [
+      'http://otaku.website.local:3000',
+      'https://shop.otaku.website'
+    ],
+    methods: ['GET', 'POST', 'PUT', 'DELETE']
+  }))
+  app.use(compression())
 
   // Read JSON
-  app.use(bodyParser.json())
+  app.use(bodyParser.json({limit: '50mb'}))
+  app.use(bodyParser.urlencoded({limit: '50mb', extended: true}))
 
   // Session
   app.use(session({

@@ -10,6 +10,7 @@ const responseFormatter = ResponseFormatter
 */
 export function verify ({code, redirect_uri}) {
   return new Promise((resolve, reject) => {
+    console.log('code', code)
     // verify the passed code for fb verification
     graph.authorize({
       client_id: process.env.FB_APP_ID,
