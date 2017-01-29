@@ -2,13 +2,16 @@ import os from 'os'
 import express from 'express'
 import cluster from 'cluster'
 import bodyParser from 'body-parser'
+import session from 'express-session'
+import pgSimple from 'connect-pg-simple'
 
 // Routes
-import Users from './routes/users'
+import Anilist from './routes/anilist'
+import Auth from './routes/auth'
+import Items from './routes/items'
 import Options from './routes/options'
 import Photos from './routes/photos'
-import Items from './routes/items'
-import Anilist from './routes/anilist'
+import Users from './routes/users'
 
 if (cluster.isMaster) {
   const numWorkers = os.cpus().length
@@ -37,12 +40,22 @@ if (cluster.isMaster) {
   // Read JSON
   app.use(bodyParser.json())
 
+  // Session
+  app.use(session({
+    store: new (pgSimple(session))(),
+    secret: process.env.SESSION_SECRET,
+    cookie: {maxAge: 7 * 24 * 60 * 60 * 1000}, // 7 days
+    saveUninitialized: false, // deprecated set to false to comply
+    resave: false
+  }))
+
   // Routes
-  app.use('/users', Users)
+  app.use('/anilist', Anilist)
+  app.use('/auth', Auth)
+  app.use('/items', Items)
   app.use('/options', Options)
   app.use('/photos', Photos)
-  app.use('/items', Items)
-  app.use('/anilist', Anilist)
+  app.use('/users', Users)
 
   app.listen(9000, () => {
     console.log(`Process ${process.pid} is listening to all incoming request.`)
