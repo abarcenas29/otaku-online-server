@@ -2,10 +2,11 @@ import os from 'os'
 import express from 'express'
 import cluster from 'cluster'
 import bodyParser from 'body-parser'
-import session from 'express-session'
-import pgSimple from 'connect-pg-simple'
 import cors from 'cors'
 import compression from 'compression'
+// Auth
+import passport from 'passport'
+import { Strategy, ExtractJwt } from 'passport-jwt'
 
 // Routes
 import Anilist from './routes/anilist'
@@ -49,16 +50,17 @@ if (cluster.isMaster) {
 
   // Read JSON
   app.use(bodyParser.json({limit: '50mb'}))
-  app.use(bodyParser.urlencoded({limit: '50mb', extended: true}))
 
-  // Session
-  app.use(session({
-    store: new (pgSimple(session))(),
-    secret: process.env.SESSION_SECRET,
-    cookie: {maxAge: 7 * 24 * 60 * 60 * 1000}, // 7 days
-    saveUninitialized: false, // deprecated set to false to comply
-    resave: false
+  // JWT Auth
+  const opts = {
+    secretOrKey: process.env.JWT_Secret,
+    jwtFromRequest: ExtractJwt.fromAuthHeader()
+  }
+  passport.use(new Strategy(opts, (jwt_payload, done) => {
+    console.log(jwt_payload)
+    done(null, jwt_payload)
   }))
+  app.use(passport.initialize())
 
   // Routes
   app.use('/anilist', Anilist)

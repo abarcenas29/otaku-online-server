@@ -2,6 +2,7 @@ import db from '~/utils/pg'
 import { formatUpdate } from '~/app/utils/dbformater'
 import ResponseFormatter from '~/app/utils/responseformatter'
 import uuidV4 from 'uuid/v4'
+import jwt from 'jwt-simple'
 
 const responseFormat = ResponseFormatter
 
@@ -27,22 +28,30 @@ export function list (params) {
 }
 
 export function create (params) {
-  const { fbid, email, name, role, mobileNo } = params
+  const { token, mobile_no } = params
+  const decodeToken = jwt.decode(token, process.env.JWT_SECRET)
+  console.log('token', decodeToken)
   return new Promise((resolve, reject) => {
-    db.oneOrNone(`
-      SELECT
-        COUNT(*)
-      from
-        users
-      WHERE
-        fbid = $1
-    `, [fbid])
-    .then(data => resolve(data))
-    .catch(e => reject(e))
+    if (!decodeToken.Error) {
+      const { id } = decodeToken
+      db.oneOrNone(`
+        SELECT
+          COUNT(*)
+        from
+          users
+        WHERE
+          fbid = $1
+      `, [id])
+      .then(data => resolve(data))
+      .catch(e => reject(e))
+    } else {
+      reject(decodeToken.Error)
+    }
   })
   .then(data => {
     // return NULL if nothing found
     if (parseInt(data.count) === 0) {
+      const { id, name, email, mobile_no } = decodeToken
       const now = new Date()
       const uuid = uuidV4()
       return db.one(`
@@ -60,11 +69,12 @@ export function create (params) {
         )
         values($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
         returning id;
-      `, [uuid, fbid, email, name, role, mobileNo, uuid, uuid, now, now])
+      `, [uuid, id, email, name, 0, mobile_no, uuid, uuid, now, now])
     }
     return 0
   })
   .then(data => {
+    // pass the data as JWT
     if (data === 0) {
       return responseFormat.response({ created: false, id: null }).success()
     } else {

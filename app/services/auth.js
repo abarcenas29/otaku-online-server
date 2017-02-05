@@ -1,7 +1,8 @@
 import db from '~/utils/pg'
 import ResponseFormatter from '~/app/utils/responseFormatter'
-// import jwt from 'jwt-simple'
+import jwt from 'jwt-simple'
 import graph from 'fbgraph'
+import _ from 'lodash'
 
 const responseFormatter = ResponseFormatter
 
@@ -34,7 +35,9 @@ export function verify ({code, redirect_uri}) {
   })
   .then(data => {
     // Handle the user data
-    return responseFormatter.response(data).success()
+    // Encode the result to JWT
+    const token = jwt.encode(data, process.env.JWT_SECRET, 'HS512')
+    return responseFormatter.response({token}).success()
   })
 }
 
@@ -63,7 +66,9 @@ export function registerOrVerifyUser (fbData) {
       `, [fbData.id]
     ).then(data => {
       if (data) {
-        resolve({user: 'exist', ...fbData})
+        // pass the data
+        const { id, name, email, role } = data
+        resolve({ user: 'exist', id, name, email, role })
       } else {
         resolve({user: 'new', ...fbData})
       }
